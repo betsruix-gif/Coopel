@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'clave_secreta_coopel_2024_segura'
-MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://Admin:admin123456@cluster0.3wpkqiz.mongodb.net/coopel") client = MongoClient(MONGO_URI) db = client.get_default_database()
+app.config["MONGO_URI"] = "mongodb+srv://Admin:admin123456@cluster0.3wpkqiz.mongodb.net/coopel"
 app.config['UPLOAD_FOLDER'] = 'static/img'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'avif'}
 
@@ -327,4 +327,5 @@ def logout():
 if __name__ == '__main__':
 
     app.run(debug=True, port=5000)
+
 
