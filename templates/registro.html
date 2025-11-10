@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - Coopel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="auth-title">Crear cuenta</h1>
+                <p class="auth-subtitle">Únete a Coopel</p>
+            </div>
+            
+            <form method="POST" class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" name="nombres" placeholder="Nombres" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="apellidos" placeholder="Apellidos" required class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Correo Electrónico" required class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Contraseña" required class="form-input">
+                </div>
+                
+                <button type="submit" class="auth-button">Crear cuenta</button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>¿Ya tienes cuenta? <a href="{{ url_for('login') }}" class="auth-link">Iniciar sesión</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

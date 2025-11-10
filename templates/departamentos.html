@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="departamentos-container">
+    <h1 class="page-title">Elige tu departamento favorito</h1>
+    <p class="page-subtitle">Descubre nuestros productos exclusivos</p>
+    
+    <div class="departamentos-grid">
+        {% for depto in departamentos %}
+        <a href="{{ url_for('productos', depto_id=depto.id) }}" class="departamento-card" style="border-color: {{ depto.color }};">
+            <div class="depto-icon" style="background: {{ depto.color }};">{{ depto.icono }}</div>
+            <h3 class="depto-name">{{ depto.nombre }}</h3>
+            <p class="depto-desc">{{ depto.descripcion }}</p>
+            <div class="depto-arrow">→</div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

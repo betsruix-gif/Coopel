@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="exito-container">
+    <div class="exito-card">
+        <div class="exito-icon">✅</div>
+        <h1 class="exito-title">¡Tu pago ha sido realizado!</h1>
+        <p class="exito-message">
+            Espera indicaciones del proveedor durante las próximas horas
+        </p>
+        
+        <div class="exito-acciones">
+            <a href="{{ url_for('departamentos_view') }}" class="btn-seguir-comprando">
+                Seguir Comprando
+            </a>
+            <a href="{{ url_for('index') }}" class="btn-inicio">
+                Ir al Inicio
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

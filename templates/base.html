@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coopel - Tu Tienda en Línea</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        {% if session.usuario %}
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <a href="{{ url_for('departamentos_view') }}" class="logo">🏪 Coopel</a>
+                </div>
+                <div class="header-center">
+                    <span class="welcome">Bienvenido, {{ session.usuario.nombre }}</span>
+                </div>
+                <div class="header-right">
+                    <a href="{{ url_for('carrito') }}" class="cart-link">
+                        🛒 Carrito 
+                        {% if session.carrito %}
+                        <span class="cart-count">{{ session.carrito|length }}</span>
+                        {% endif %}
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="logout-btn">Cerrar Sesión</a>
+                </div>
+            </div>
+        </header>
+        {% endif %}
+
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+
+        {% if session.usuario and request.endpoint not in ['login', 'registro', 'bienvenida'] %}
+        <nav class="bottom-nav">
+            <a href="{{ url_for('departamentos_view') }}" class="nav-item {% if request.endpoint == 'departamentos_view' %}active{% endif %}">
+                🏪 Departamentos
+            </a>
+            <a href="{{ url_for('carrito') }}" class="nav-item {% if request.endpoint == 'carrito' %}active{% endif %}">
+                🛒 Carrito
+            </a>
+            <a href="{{ url_for('logout') }}" class="nav-item">
+                👋 Salir
+            </a>
+        </nav>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

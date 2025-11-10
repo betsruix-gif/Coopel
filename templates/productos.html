@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="productos-container">
+    <div class="productos-header">
+        <a href="{{ url_for('departamentos_view') }}" class="back-link">← Volver a Departamentos</a>
+        <h1 class="page-title">{{ departamento.nombre }}</h1>
+        <p class="page-subtitle">{{ departamento.descripcion }}</p>
+    </div>
+    
+    <div class="productos-grid">
+        {% for producto in productos %}
+        <div class="producto-card">
+            <div class="producto-image">
+                <img src="{{ url_for('static', filename=producto.imagen_path) }}" 
+                     alt="{{ producto.nombre }}"
+                     onerror="this.src='{{ url_for('static', filename='img/placeholder.jpg') }}'">
+            </div>
+            
+            <div class="producto-info">
+                <h3 class="producto-marca">{{ producto.marca }}</h3>
+                <h2 class="producto-nombre">{{ producto.nombre }}</h2>
+                <p class="producto-precio">${{ "{:,.2f}".format(producto.precio) }}</p>
+                <p class="producto-desc-short">{{ producto.descripcion[:100] }}...</p>
+                
+                <div class="producto-actions">
+                    <a href="{{ url_for('producto_detalle', depto_id=departamento.id, producto_id=producto.id) }}" 
+                       class="btn-ver-detalle">Ver Detalles</a>
+                    <button class="btn-agregar-carrito" 
+                            data-depto-id="{{ departamento.id }}"
+                            data-producto-id="{{ producto.id }}"
+                            data-producto-nombre="{{ producto.nombre }}">
+                        Agregar al carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    document.querySelectorAll('.btn-agregar-carrito').forEach(button => {
+        button.addEventListener('click', function() {
+            const deptoId = this.getAttribute('data-depto-id');
+            const productoId = this.getAttribute('data-producto-id');
+            const productoNombre = this.getAttribute('data-producto-nombre');
+            
+            fetch('{{ url_for("agregar_carrito") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'depto_id=' + deptoId + '&producto_id=' + productoId
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    const cartCount = document.querySelector('.cart-count');
+                    if (cartCount) {
+                        cartCount.textContent = data.carrito_count;
+                    }
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al agregar al carrito');
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

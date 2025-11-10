@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="procesando-container">
+    <div class="procesando-card">
+        <div class="procesando-icon">⏳</div>
+        <h1 class="procesando-title">Procesando tu pago</h1>
+        <p class="procesando-message">Por favor espera...</p>
+        
+        <div class="loading-spinner"></div>
+    </div>
+</div>
+
+<script>
+setTimeout(function() {
+    window.location.href = "{{ url_for('pago_exitoso') }}";
+}, 3000);
+</script>
+{% endblock %}

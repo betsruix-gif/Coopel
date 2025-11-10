@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="carrito-container">
+    <h1 class="page-title">Tu Carrito</h1>
+    
+    {% if carrito %}
+    <div class="carrito-items">
+        {% for item in carrito %}
+        <div class="carrito-item" data-producto-id="{{ item.producto_id }}" data-depto-id="{{ item.depto_id }}">
+            <div class="item-imagen">
+                <img src="{{ url_for('static', filename=item.imagen_path) }}" 
+                     alt="{{ item.nombre }}"
+                     onerror="this.src='{{ url_for('static', filename='img/placeholder.jpg') }}'">
+            </div>
+            
+            <div class="item-info">
+                <h3 class="item-nombre">{{ item.nombre }}</h3>
+                <p class="item-marca">{{ item.marca }}</p>
+                <p class="item-precio-unitario">${{ "{:,.2f}".format(item.precio) }} c/u</p>
+            </div>
+            
+            <div class="item-cantidad">
+                <label>Cantidad:</label>
+                <input type="number" value="{{ item.cantidad }}" min="1" 
+                       class="cantidad-input" 
+                       data-producto-id="{{ item.producto_id }}"
+                       data-depto-id="{{ item.depto_id }}">
+            </div>
+            
+            <div class="item-subtotal">
+                <p class="subtotal">${{ "{:,.2f}".format(item.precio * item.cantidad) }}</p>
+            </div>
+            
+            <div class="item-acciones">
+                <a href="{{ url_for('eliminar_del_carrito', depto_id=item.depto_id, producto_id=item.producto_id) }}" 
+                   class="btn-eliminar"
+                   onclick="return confirm('¿Eliminar {{ item.nombre }} del carrito?')">
+                    🗑️ Eliminar
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="carrito-total">
+        <div class="total-info">
+            <h3>Total: ${{ "{:,.2f}".format(total) }}</h3>
+        </div>
+        
+        <div class="carrito-acciones">
+            <a href="{{ url_for('departamentos_view') }}" class="btn-seguir-comprando">
+                ← Seguir Comprando
+            </a>
+            <a href="{{ url_for('pago') }}" class="btn-proceder-pago">
+                Proceder al Pago →
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="carrito-vacio">
+        <div class="empty-icon">🛒</div>
+        <h2>Tu carrito está vacío</h2>
+        <p>Agrega algunos productos increíbles</p>
+        <a href="{{ url_for('departamentos_view') }}" class="btn-empezar-comprar">
+            Empezar a Comprar
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.cantidad-input').forEach(input => {
+        input.addEventListener('change', function() {
+            const productoId = this.getAttribute('data-producto-id');
+            const deptoId = this.getAttribute('data-depto-id');
+            const nuevaCantidad = this.value;
+            
+            fetch('{{ url_for("actualizar_carrito") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'producto_id=' + productoId + '&depto_id=' + deptoId + '&cantidad=' + nuevaCantidad
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al actualizar cantidad');
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

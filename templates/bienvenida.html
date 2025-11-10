@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bienvenida-container">
+    <div class="bienvenida-card">
+        <div class="bienvenida-icon">👋</div>
+        <h1 class="bienvenida-title">BIENVENIDO</h1>
+        <p class="bienvenida-message">gracias por elegir Coopel</p>
+        <a href="{{ url_for('departamentos_view') }}" class="bienvenida-button">
+            Continuar
+        </a>
+    </div>
+</div>
+{% endblock %}

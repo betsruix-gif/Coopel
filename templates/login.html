@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Coopel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="auth-title">Iniciar sesión</h1>
+                <p class="auth-subtitle">Accede a tu cuenta Coopel</p>
+            </div>
+            
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+            
+            <form method="POST" class="auth-form">
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Correo Electrónico" required class="form-input"
+                           value="admin@coopel.com">
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Contraseña" required class="form-input"
+                           value="123456">
+                </div>
+                
+                <button type="submit" class="auth-button">Iniciar sesión</button>
+            </form>
+            
+            <div class="auth-divider">
+                <span>o</span>
+            </div>
+            
+            <div class="demo-credentials">
+                <p><strong>Credenciales de demo:</strong></p>
+                <p>Email: admin@coopel.com</p>
+                <p>Contraseña: 123456</p>
+            </div>
+            
+            <a href="{{ url_for('registro') }}" class="auth-link-button">
+                Crear cuenta nueva
+            </a>
+        </div>
+    </div>
+</body>
+</html>
